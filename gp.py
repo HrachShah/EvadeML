@@ -420,7 +420,7 @@ if __name__ == "__main__":
                     fitness_function = fitness_func,
                     )
         gp.run()
-    except Exception, e:
+    except (ValueError, TypeError) as e:
         touch(os.path.join(job_dir, error_flag))
         logger.exception(e)
         sys.exit(1)
