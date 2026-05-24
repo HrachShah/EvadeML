@@ -189,7 +189,7 @@ class GPPdf:
         logger.info("Got %d distinct traces" % len(traces))
         self.traces = traces
 
-        self.remaining_traces_id = range(len(traces))
+        self.remaining_traces_id = list(range(len(traces)))
 
         if 0 < len(self.remaining_traces_id) <= self.pop_size:
             tid_picked = self.remaining_traces_id
@@ -295,7 +295,7 @@ def get_opt(argv):
         -f <stop criterion in fitness score>"
     
     if len(argv) < 2:
-        print help_msg
+        print(help_msg)
         sys.exit(2)
 
     try:
@@ -312,12 +312,12 @@ def get_opt(argv):
                                                                  "round=",
                                                                  ])
     except getopt.GetoptError:
-        print help_msg
+        print(help_msg)
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print help_msg
+            print(help_msg)
             sys.exit()
         elif opt in ("-c", "--classifier"):
             classifier_name = arg
@@ -343,12 +343,12 @@ def get_opt(argv):
             round_id = int(arg)
     
     if xover_rate != 0 and pop_size % 4 != 0:
-        print "The population size should be times of 4."
+        print("The population size should be times of 4.")
         sys.exit(2)
 
-    print classifier_name, start_file, ext_genome_folder, \
+    print(classifier_name, start_file, ext_genome_folder, \
         pop_size, max_gen, mut_rate, xover_rate, \
-        stop_fitness, random_state_file_path, token, round_id
+        stop_fitness, random_state_file_path, token, round_id)
 
     return classifier_name, start_file, ext_genome_folder, \
         pop_size, max_gen, mut_rate, xover_rate, \
@@ -420,7 +420,7 @@ if __name__ == "__main__":
                     fitness_function = fitness_func,
                     )
         gp.run()
-    except Exception, e:
+    except Exception as e:
         touch(os.path.join(job_dir, error_flag))
         logger.exception(e)
         sys.exit(1)
