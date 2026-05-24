@@ -42,5 +42,5 @@ if __name__ == '__main__':
         try:
             print cmd
             subprocess.call(cmd.split(' '))
-        except KeyboardInterrupt, error:
+        except KeyboardInterrupt:
             break
