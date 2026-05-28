@@ -37,7 +37,7 @@ class GPPdf:
                 random_state = pickle.load(open(random_state_file_path, 'rb'))
                 random.setstate(random_state)
                 logger.debug("Loaded a random state from %s" % random_state_file_path)
-            except:
+            except (OSError, pickle.UnpicklingError, AttributeError):
                 logger.warning("Failed to load random state from %s" % random_state_file_path)
 
         # Save random state for reproducing results in the future.
