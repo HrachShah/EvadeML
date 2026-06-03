@@ -56,7 +56,7 @@ def query_task(task_id):
                     if child.tag == 'result':
                         result = child.text
                         break
-        except:
+        except Exception:
             print "error in task query, try again later"
             time.sleep(1)
             continue      
@@ -80,7 +80,7 @@ def submit_files(file_paths):
         while task_id == '' or task_id == None:
             try:
                 task_id = submit_file(file_path)
-            except:
+            except Exception:
                 print "Warning: Failed to get a task id in wepawet submission, retry 1 sec later."
                 time.sleep(1)
         #results[file_path] = {}
@@ -105,7 +105,7 @@ def judge_variants(file_paths):
         while task_id == '' or task_id == None:
             try:
                 task_id = submit_file(file_path)
-            except:
+            except Exception:
                 print "Warning: Failed to get a task id in wepawet submission, retry 1 sec later."
                 time.sleep(1)
         #results[file_path] = {}
