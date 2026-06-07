@@ -34,10 +34,11 @@ class GPPdf:
         # Load the pre-defined random state for reproducing the existing results.
         if random_state_file_path:
             try:
-                random_state = pickle.load(open(random_state_file_path, 'rb'))
+                with open(random_state_file_path, 'rb') as _f:
+                    random_state = pickle.load(_f)
                 random.setstate(random_state)
                 logger.debug("Loaded a random state from %s" % random_state_file_path)
-            except:
+            except (OSError, pickle.UnpicklingError, EOFError, AttributeError, ValueError, TypeError):
                 logger.warning("Failed to load random state from %s" % random_state_file_path)
 
         # Save random state for reproducing results in the future.
