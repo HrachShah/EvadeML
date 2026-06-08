@@ -31,7 +31,12 @@ def list_file_paths(dir_name, size_limit=None):
 def touch(fname):
     try:
         os.utime(fname, None)
-    except:
+    except (OSError, NotADirectoryError, FileNotFoundError, PermissionError):
+        # os.utime raises OSError subclasses for missing files, bad
+        # permissions, ENOTDIR when fname has a non-directory prefix,
+        # and EACCES/EPERM for read-only paths. Fall back to creating
+        # the file empty so the "touch" semantics still hold for the
+        # typical log/flag case.
         open(fname, 'a').close()
 
 def deepcopy(obj):
