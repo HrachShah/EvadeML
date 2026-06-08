@@ -60,7 +60,12 @@ class Trace:
                     PdfGenome.swap(root, op_obj_path, ext_root, tgt_obj_path)
                 else:
                     logger.error("undefined operator: ", op)
-            except:
+            except (KeyError, IndexError, TypeError, RecursionError):
+                # get_parent_key walks the path via dict/list indexing
+                # (KeyError/IndexError/TypeError) and deepcopy on the
+                # target object can recurse into a cycle (RecursionError).
+                # Keep the original "log and continue" semantics so a
+                # single bad operation doesn't abort the whole trace.
                 logger.error("operation failed: %s" % str(operation))
         return root
 
