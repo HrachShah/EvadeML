@@ -78,7 +78,7 @@ class PdfGenome:
             else:
                 # Non-terminal nodes. Need further traversal.
                 obj_id = id(obj)
-                if visited_objs_paths.has_key(obj_id):
+                if obj_id in visited_objs_paths:
                     #paths_collection.append(path) # Why should we add a visited obj?
                     visited_objs_paths[obj_id].append(path)
                     continue
@@ -115,7 +115,7 @@ class PdfGenome:
                 logger.error("Cannot delete invalid index in PdfArray: %s" % path)
                 return False
         elif isinstance(parent, dict):
-            if not parent.has_key(key):
+            if key not in parent:
                 logger.error("Cannot delete invalid key in PdfDict: %s" % path)
                 return False
         else:
