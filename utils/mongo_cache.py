@@ -15,7 +15,8 @@ client = MongoClient(ADDR)
 db = client[DB_NAME]
 
 def load_pickle_to_mongodb(pickle_file_name, col):
-    cache = pickle.load(open(pickle_file_name))
+    with open(pickle_file_name, 'rb') as cache_file:
+        cache = pickle.load(cache_file)
     records = []
     for sha1, result in cache.iteritems():
         record = {'sha1': sha1, 'result': result}
