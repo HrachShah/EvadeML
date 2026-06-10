@@ -22,7 +22,17 @@ def _pdfrate_wrapper(ntuple):
     '''
     try:
         return pdfrate_once(*ntuple)
-    except Exception as e:
+    except (ValueError, TypeError, AttributeError, OSError, IndexError) as e:
+        # pdfrate_once calls FeatureEdit(file_path).retrieve_feature_vector_numpy()
+        # which can raise:
+        #   - ValueError for an unparseable / non-PDF file
+        #   - AttributeError for missing pdfrw attributes on a malformed file
+        #   - OSError for I/O errors when reading the file
+        #   - IndexError / TypeError for shape mismatches in the returned
+        #     numpy feature vector
+        # Returning the exception (instead of raising) lets the pool caller
+        # surface it through the .map() result list, which is how the
+        # multiprocessing-based fitness path inspects per-file failures.
         return e
 
 def pdfrate_once(classifier, scaler, file_path):
@@ -39,7 +49,12 @@ def _pdfrate_feat_wrapper(ntuple):
     '''
     try:
         return pdfrate_feature_once(*ntuple)
-    except Exception as e:
+    except (ValueError, TypeError, AttributeError, OSError, IndexError) as e:
+        # pdfrate_feature_once only does PDF feature extraction (no
+        # classifier decision_function call), so the failure modes are a
+        # subset of _pdfrate_wrapper: parse errors, malformed PDF, I/O,
+        # and feature-vector shape problems. Returning the exception lets
+        # the pool caller surface it through the .map() result list.
         return e
 
 def pdfrate_feature_once(classifier, scaler, file_path):
