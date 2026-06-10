@@ -35,8 +35,8 @@ class PdfGenome:
     def load_trace(pdf_file_path):
         fpath = pdf_file_path + ".trace"
         if os.path.isfile(fpath):
-            f = open(fpath, 'rb')
-            trace = pickle.load(f)
+            with open(fpath, 'rb') as f:
+                trace = pickle.load(f)
             return trace
         else:
             return None
