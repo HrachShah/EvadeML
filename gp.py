@@ -34,7 +34,8 @@ class GPPdf:
         # Load the pre-defined random state for reproducing the existing results.
         if random_state_file_path:
             try:
-                random_state = pickle.load(open(random_state_file_path, 'rb'))
+                with open(random_state_file_path, 'rb') as f:
+                    random_state = pickle.load(f)
                 random.setstate(random_state)
                 logger.debug("Loaded a random state from %s" % random_state_file_path)
             except:
@@ -43,7 +44,8 @@ class GPPdf:
         # Save random state for reproducing results in the future.
         random_state_file = os.path.join(self.job_dir, "random_state.pickle")
         random_state = random.getstate()
-        pickle.dump(random_state, open(random_state_file, 'wb'))
+        with open(random_state_file, 'wb') as f:
+            pickle.dump(random_state, f)
 
         self.fitness_func = fitness_function
 
@@ -117,7 +119,8 @@ class GPPdf:
             # scores = [0.1, 0.2] * (self.pop_size/2)
 
             self.fitness_scores[self.generation] = scores
-            pickle.dump(self.fitness_scores, open(score_file_name, 'wb'))
+            with open(score_file_name, 'wb') as f:
+                pickle.dump(self.fitness_scores, f)
             
             self.logger.info("Fitness scores: %s" % scores)
             self.logger.info("Sorted fitness: %s" % sorted(scores, reverse=True))

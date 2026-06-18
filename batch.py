@@ -7,7 +7,8 @@ import pickle
 to_skip_pickle = "evade_both_to_skip.pickle"
 
 if os.path.isfile(to_skip_pickle):
-    to_skip = pickle.load(open(to_skip_pickle))
+    with open(to_skip_pickle, 'rb') as f:
+        to_skip = pickle.load(f)
 else:
     to_skip = []
 
