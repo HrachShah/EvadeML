@@ -131,7 +131,8 @@ def compare_feats(x1, x2):
 
     return deleted, added, fixed
 
-model = pickle.load(open(model_path, 'rb'))
+with open(model_path, 'rb') as f:
+    model = pickle.load(f)
 def model_decision(X):
     y = model.decision_function(X)
     r = list(y)
