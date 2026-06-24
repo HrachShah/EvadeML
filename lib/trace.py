@@ -60,7 +60,7 @@ class Trace:
                     PdfGenome.swap(root, op_obj_path, ext_root, tgt_obj_path)
                 else:
                     logger.error("undefined operator: ", op)
-            except:
+            except Exception:
                 logger.error("operation failed: %s" % str(operation))
         return root
 

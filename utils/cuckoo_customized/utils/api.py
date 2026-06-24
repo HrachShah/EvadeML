@@ -352,8 +352,9 @@ def pcap_get(task_id):
     if os.path.exists(file_path):
         response.content_type = "application/octet-stream; charset=UTF-8"
         try:
-            return open(file_path, "rb").read()
-        except:
+            with open(file_path, "rb") as f:
+                return f.read()
+        except OSError:
             return HTTPError(500, "An error occurred while reading PCAP")
     else:
         return HTTPError(404, "File not found")
