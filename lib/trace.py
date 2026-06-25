@@ -11,7 +11,8 @@ class Trace:
     @staticmethod
     def load_traces(pickle_path):
         if os.path.isfile(pickle_path):
-            traces = pickle.load(open(pickle_path, 'rb'))
+            with open(pickle_path, 'rb') as f:
+                traces = pickle.load(f)
             return traces
         else:
             return []
@@ -19,7 +20,8 @@ class Trace:
     @staticmethod
     def dump_traces(traces, pickle_path, exclude_traces = None):
         traces = Trace.get_distinct_traces(traces, exclude_traces = exclude_traces)
-        pickle.dump(traces, open(pickle_path, 'wb'))
+        with open(pickle_path, 'wb') as f:
+            pickle.dump(traces, f)
 
     # Only need to run at once: at loading or restoring.
     @staticmethod
@@ -60,7 +62,7 @@ class Trace:
                     PdfGenome.swap(root, op_obj_path, ext_root, tgt_obj_path)
                 else:
                     logger.error("undefined operator: ", op)
-            except:
+            except Exception:
                 logger.error("operation failed: %s" % str(operation))
         return root
 
