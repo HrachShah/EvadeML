@@ -31,8 +31,9 @@ def list_file_paths(dir_name, size_limit=None):
 def touch(fname):
     try:
         os.utime(fname, None)
-    except:
-        open(fname, 'a').close()
+    except OSError:
+        with open(fname, 'a'):
+            pass
 
 def deepcopy(obj):
     return copy.deepcopy(obj)
